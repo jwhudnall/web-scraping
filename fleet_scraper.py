@@ -32,13 +32,96 @@ boats = {
     "Wolf River": "https://www.vesselfinder.com/vessels/WOLF-RIVER-IMO-0-MMSI-367060910"
     }
 
+def abbreviate_state(state):
+    state_dict = {
+    'Alabama': 'AL',
+    'Alaska': 'AK',
+    'American Samoa': 'AS',
+    'Arizona': 'AZ',
+    'Arkansas': 'AR',
+    'California': 'CA',
+    'Colorado': 'CO',
+    'Connecticut': 'CT',
+    'Delaware': 'DE',
+    'District of Columbia': 'DC',
+    'Florida': 'FL',
+    'Georgia': 'GA',
+    'Guam': 'GU',
+    'Hawaii': 'HI',
+    'Idaho': 'ID',
+    'Illinois': 'IL',
+    'Indiana': 'IN',
+    'Iowa': 'IA',
+    'Kansas': 'KS',
+    'Kentucky': 'KY',
+    'Louisiana': 'LA',
+    'Maine': 'ME',
+    'Maryland': 'MD',
+    'Massachusetts': 'MA',
+    'Michigan': 'MI',
+    'Minnesota': 'MN',
+    'Mississippi': 'MS',
+    'Missouri': 'MO',
+    'Montana': 'MT',
+    'Nebraska': 'NE',
+    'Nevada': 'NV',
+    'New Hampshire': 'NH',
+    'New Jersey': 'NJ',
+    'New Mexico': 'NM',
+    'New York': 'NY',
+    'North Carolina': 'NC',
+    'North Dakota': 'ND',
+    'Northern Mariana Islands':'MP',
+    'Ohio': 'OH',
+    'Oklahoma': 'OK',
+    'Oregon': 'OR',
+    'Pennsylvania': 'PA',
+    'Puerto Rico': 'PR',
+    'Rhode Island': 'RI',
+    'South Carolina': 'SC',
+    'South Dakota': 'SD',
+    'Tennessee': 'TN',
+    'Texas': 'TX',
+    'Utah': 'UT',
+    'Vermont': 'VT',
+    'Virgin Islands': 'VI',
+    'Virginia': 'VA',
+    'Washington': 'WA',
+    'West Virginia': 'WV',
+    'Wisconsin': 'WI',
+    'Wyoming': 'WY'
+    }
+    if state in state_dict:
+        state = state_dict[state]
+    return state
+
+
+def get_city(raw):
+    if 'city' in raw['address']:
+        town = raw['address']['city']
+        
+    elif 'town' in raw['address']:
+        town = raw['address']['town']
+        
+    elif 'village' in raw['address']:
+        town = raw['address']['village']
+        
+    elif 'county' in raw['address']:
+        town = raw['address']['county']
+        
+    else:
+        town = 'Error'
+        
+    return town
+
+
 start = time.time()
 
 with open(filename, 'w', newline='') as file:
     csv_writer = writer(file)
     
     # Add Headers
-    csv_writer.writerow(['Vessel', 'Lat-Long','Last Update','Address'])
+    csv_writer.writerow(['Vessel', 'Lat-Long','Last Update','City', 'State'])
     
     for boat, url in tqdm(boats.items()):
         response = requests.get(url, headers=agent)
@@ -54,17 +137,25 @@ with open(filename, 'w', newline='') as file:
         latlon_clean = [val[:-2] for val in latlon]
         latlon_clean[1] = '-'+latlon_clean[1]  
         position = ', '.join(latlon_clean)
-        # Reverse lat-lon lookup, giving address
+
+        # Obtain raw physical data
         physical = geolocator.reverse(position)
-        location = physical.address
+        # location = physical.address # Gives full address. Too much for our needs.
+        vessel_raw = physical.raw 
         
+        # Isolate town, state data values
+        town = get_city(vessel_raw)
+
+        state = vessel_raw['address']['state']
+        state = abbreviate_state(state) # Abbreviate state from full name to a 2-letter code
+
         # Isolate and clean last position update
         time_since_last_position = table[11].get_text() # coordinate row
         cleaned_time = time_since_last_position[:-3]
         
         
         # Write results to spreadsheet row
-        csv_writer.writerow([boat, position, cleaned_time, location])
+        csv_writer.writerow([boat, position, cleaned_time, town, state])
         
         # Wait n seconds in between requests
         time.sleep(1)
