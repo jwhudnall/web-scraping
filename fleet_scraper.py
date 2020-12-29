@@ -121,13 +121,24 @@ def get_city(raw):
     return town
 
 
+def convert_time(last_update):
+    unit_to_minutes = {'day':24*60, 'hour': 60, 'min': 1}
+    # Extract leading integer unit measurement
+    number = ''.join(x for x in last_update if x.isdigit())
+    number = int(float(number))
+    for unit in unit_to_minutes:
+        if unit in last_update:
+            conversion = number * unit_to_minutes[unit]
+            return conversion
+    return last_update
+
 start = time.time()
 
 with open(scrape_file, 'w', newline='') as file:
     csv_writer = writer(file)
     
     # Add Headers
-    csv_writer.writerow(['Vessel', 'Lat-Long','Last Update','City', 'State'])
+    csv_writer.writerow(['Vessel', 'Lat-Long','Last Update', 'Last Update (minutes)','City', 'State'])
     
     for boat, url in tqdm(boats.items()):
         response = requests.get(url, headers=agent)
@@ -158,10 +169,10 @@ with open(scrape_file, 'w', newline='') as file:
         # Isolate and clean last position update
         time_since_last_position = table[11].get_text() # coordinate row
         cleaned_time = time_since_last_position[:-3]
-        
+        converted_time = convert_time(cleaned_time)
         
         # Write results to spreadsheet row
-        csv_writer.writerow([boat, position, cleaned_time, town, state])
+        csv_writer.writerow([boat, position, cleaned_time, converted_time, town, state])
         
         # Wait n seconds in between requests
         time.sleep(1)
