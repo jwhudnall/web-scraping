@@ -1,5 +1,6 @@
 import requests
 import time
+import os
 from bs4 import BeautifulSoup
 from csv import writer
 from geopy.geocoders import Nominatim
@@ -8,8 +9,13 @@ from tqdm import tqdm
 
 agent = {"User-Agent":'Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/59.0.3071.115 Safari/537.36'}
 geolocator = Nominatim(user_agent="jwh")
+
+timestamp = time.strftime('%Y%m%d-%I_%M_%p')
+DATA_DIR = 'data'
+os.makedirs(DATA_DIR, exist_ok=True)
 timestamp = time.strftime('%Y%m%d-%I_%M_%p')
 filename = timestamp + '-Fleet Location.csv'
+scrape_file = os.path.join(DATA_DIR, filename)
 
 boats = {
     "Brangus": "https://www.vesselfinder.com/vessels/BRANGUS-IMO-0-MMSI-366899270",
@@ -117,7 +123,7 @@ def get_city(raw):
 
 start = time.time()
 
-with open(filename, 'w', newline='') as file:
+with open(scrape_file, 'w', newline='') as file:
     csv_writer = writer(file)
     
     # Add Headers
