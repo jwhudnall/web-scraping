@@ -6,4 +6,5 @@ This is a script I developed for work to help me keep track of different vessels
 2. The string is converted into a format that gets fed into a reverse geographic lookup, resulting in a physical location.
 3. Desired attributes are written to a .CSV file. The file name is formatted to start with the current DATETIME for historical purposes.
 
+tqdm is used to show progress as the script enumerates the fleet:
 ![Boat Scraper Progress](/web-scraper-progress.png)
