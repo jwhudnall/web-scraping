@@ -8,6 +8,7 @@ import time
 from random import randint
 import winsound
 
+
 def scrape_site(url):
     driver = webdriver.Chrome(executable_path='chromedriver.exe')
     driver.get(url)
