@@ -1,5 +1,5 @@
 # Fleet Position Scraper
-This is a script I developed for work to help me keep track of different vessels in our fleet.
+This is a script I developed to assist in tracking the positioning of our fleet, both at runtime and over time.
 
 ## How it Works
 1. The script scrapes updated LAT/LON data string from an AIS source for each defined vessel.
