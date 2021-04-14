@@ -8,6 +8,9 @@ import time
 from random import randint
 import winsound
 
+# Chrome Version
+# 4/3/2021
+# Version 89.0.4389.114 (Official Build) (64-bit)
 
 def scrape_site(url):
     driver = webdriver.Chrome(executable_path='chromedriver.exe')
@@ -27,7 +30,7 @@ def alert():
     return sound
 
 def main():
-    url = 'https://www.bestbuy.com/site/nvidia-geforce-rtx-3060-ti-8gb-gddr6-pci-express-4-0-graphics-card-steel-and-black/6439402.p?skuId=6439402'
+    url = 'https://www.bestbuy.com/site/nvidia-geforce-rtx-3080-10gb-gddr6x-pci-express-4-0-graphics-card-titanium-and-black/6429440.p?skuId=6429440'
     attempt = 0
     out_of_stock = True
     
