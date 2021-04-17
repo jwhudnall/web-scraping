@@ -27,7 +27,8 @@ def alert():
     return sound
 
 def main():
-    url = 'https://www.bestbuy.com/site/evga-nvidia-geforce-rtx-3060-xc-gaming-12gb-gddr6-pci-express-4-0-graphics-card/6454328.p?skuId=6454328'
+    # Copy/paste desired URL below. The script should work for any valid link.
+    url = 'https://www.bestbuy.com/site/nvidia-geforce-rtx-3060-ti-8gb-gddr6-pci-express-4-0-graphics-card-steel-and-black/6439402.p?skuId=6439402'
     attempt = 0
     out_of_stock = True
     message = 'sold out'
