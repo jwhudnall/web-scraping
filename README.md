@@ -1,7 +1,8 @@
 # Web Scraping
 This repo is a collection of scripts created while self-learning web scraping. The original intent of the data collection was to update boat positions (Lat/Lon) to assist with fleet tracking for my primary job. This later evolved into hunting for one of the elusive RTX 3000 series GPUs.
 
-## 1. fleet-positions
+## 1. fleet-positions (Not Working as of 2021-04)
+<b>2021-04 Update</b> The website from which this script collects data was modified. The script needs to be updated.
 This is a script I developed to assist in tracking the positioning of our fleet, both at runtime and over time.
 
 ### How it Works
