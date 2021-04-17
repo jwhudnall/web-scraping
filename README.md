@@ -5,6 +5,15 @@ This repo is a collection of scripts created while self-learning web scraping. T
 <b>2021-04 Update</b> The website from which this script collects data was modified. The script needs to be updated.
 This is a script I developed to assist in tracking the positioning of our fleet, both at runtime and over time.
 
+### Dependencies
+This script uses the following modules.
+* Jupyter
+* Selenium
+* bs4
+* requests
+* geopy (using conda: `conda install -c conda-force geopy`
+* tqdm
+
 ### How it Works
 1. The script scrapes updated LAT/LON data string from an AIS source for each defined vessel.
 2. The string is converted into a format that gets fed into a reverse geographic lookup, resulting in a physical location.
